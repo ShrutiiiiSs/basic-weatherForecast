@@ -1,52 +1,40 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { InputName } from "./component/input";
 import "./App.css";
-import Card  from "./component/card";
-import { fetchWeather } from "./service/weatherAPI";
-import {React} from 'react';
+import Card from "./component/card";
+import { setCity, fetchWeatherData } from "./store/weatherSlice";
 
 function App() {
-  
-  const [weatherData, setWeatherData] = useState(null);
-  const [city, setCity] = useState("Delhi");
-  const [response,setResponse] = useState("");
+  const dispatch = useDispatch();
+  const city = useSelector((state) => state.weather.city);
+  const weatherData = useSelector((state) => state.weather.weatherData);
+  const status = useSelector((state) => state.weather.status);
 
-useEffect(() => {
-  console.log("inside in app.jsx ", city);
-  const fetchData = async () => {
-    const response = await fetchWeather(city);
-    setWeatherData(response); 
+  useEffect(() => {
+    console.log("inside in app.jsx", city);
+    dispatch(fetchWeatherData(city));
+  }, [city, dispatch]);
+
+  const mouseClickk = (city) => {
+    console.log("event happened again", city);
+    dispatch(setCity(city));
   };
 
-  fetchData(); // Call the async function
-}, [city]);
-
-
-  const mouseClickk = (city)=>
-    {
-      setCity(city);
-    console.log("event happeend again", city)
-    }
-
-    
   return (
     <>
-
-      <h1> weather forecast app</h1>
-      <InputName  city ={city} onClick = {mouseClickk}  />
-      
+      <h1>Weather Forecast App</h1>
+      <InputName city={city} onClick={mouseClickk} />
       <div>
-      {weatherData  && ! weatherData.error ? (
-        <Card response ={weatherData} />
-      ) : (
-        <p>Loading weather data...</p>
-      )}
-    </div>
-
-
-    </>    
+        {status === 'loading' ? (
+          <p>Loading weather data...</p>
+        ) : weatherData && !weatherData.error ? (
+          <Card response={weatherData} />
+        ) : (
+          <p>Error fetching weather data.</p>
+        )}
+      </div>
+    </>
   );
 }
 
