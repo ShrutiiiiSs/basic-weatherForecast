@@ -8,16 +8,18 @@ import Typography from '@mui/material/Typography';
 
 
 const card = (props) => {
+    console.log("props isss", props)
     return(
   <Box sx={{ minWidth: 275, m: 2 }}>
  <Card variant="outlined">
   <React.Fragment >
     <CardContent>
       <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-        {props.city}
+        {props.response.location.name}
+        {/* delhi */}
       </Typography>
       <Typography variant="h5" component="div">
-        temp is {props.temp}
+        temp is {props.response.current.temp_c}
       </Typography>
       
     </CardContent>

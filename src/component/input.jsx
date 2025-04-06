@@ -5,16 +5,12 @@ export const InputName =(props) => {
     const [value, setValue] = useState('');
     const [error, setError] = useState('');
 
-    // useEffect(() => {
-    //   console.log("inputjjkbjkb is mounted")
-    //   setValue(props.city); 
-    // }, []);
 
     useEffect(() => {
       if (props.city) {
         setValue(props.city);
       }
-    }, [props.city]);
+    }, []);
   
 
   const handleChange = (e) => {
